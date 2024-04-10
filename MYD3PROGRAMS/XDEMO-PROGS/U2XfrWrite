@@ -1,0 +1,31 @@
+SUBROUTINE U2XfrWrite(argFileName, argRecordId, argRecord, argStatus, argOutput)
+argStatus = 0
+argOutput = ""
+IF argFileName = "" THEN
+   argStatus = 1
+   argOutput = "argFileName must contain a file name"
+END
+IF argRecordId = "" THEN
+   argStatus = 1
+   IF argOutput = "" THEN
+      argOutput = argOutput:" and "
+   END
+   argOutput := "argRecordId must contain a record ID"
+END
+IF argStatus = 1 THEN
+   RETURN
+END
+OPEN argFileName TO fvar THEN
+   WRITE argRecord ON fvar, argRecordId ON ERROR
+      argStatus = 1
+      argOutput = "WRITE to ":argFileName:" record ID ":argRecordId:" failed - ON ERROR clause."
+   END ELSE
+      argStatus = 1
+      argOutput = "WRITE to ":argFileName:" record ID ":argRecordId:" failed - ELSE clause."
+   END
+END ELSE
+   argStatus = 1
+   argOutput = "OPEN of ":argFileName:" failed."
+END
+RETURN
+END

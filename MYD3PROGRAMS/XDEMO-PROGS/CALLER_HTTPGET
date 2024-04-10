@@ -1,0 +1,20 @@
+*******************************************************************************
+*
+*       Program CALLER_HTTPGET
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 19, 2023 11:59:43 AM
+*  Description:
+*
+*
+*****************************************************************************
+PRINT "Which customer record ID do you want to get?"
+PRINT "CUSTID=":
+INPUT  CUSTID
+CALL CallHTTPGET(CUSTID)
+

@@ -1,0 +1,41 @@
+------------------------------------------------------------
+SUBROUTINE to update a D3 data file record
+-----------------------------------------------------------
+:ct xdemo,bp, RWFILE
+
+    RWFILE
+SUBROUTINE UPDATERESOURCE(ID, FirstName, Result)
+* Res ID - Input
+* FirstName - Input
+* Result - Output. Success or failure condition.
+*
+OPEN 'MEMBERS' TO MEMBERS.FILE ELSE STOP 201, 'members'
+inputID=ID
+READU item FROM MEMBERS.FILE,ID ELSE STOP 202, ID
+item<1>=FirstName
+WRITEU item ON MEMBERS.FILE,ID
+
+Result = item
+print "Result=":Result
+CLOSE MEMBERS.FILE
+RETURN
+
+-------------------------------------
+Calling Program 
+------------------------------------
+:CT XDEMO,BP, TESTRW
+    TESTRW
+001 RESULT=""
+002 FIRSTNAME="Ravi"
+003 ID=1060
+004
+005 PRINT "CALLING THE RWFILE FOR UPDATE RECORD ": ID
+006 CALL RWFILE(ID, FIRSTNAME, RESULT)
+007 PRINT "RESULT=":RESULT
+
+
+
+---------------------------
+Testing Result
+--------------------------
+:RUN BP TESTRW

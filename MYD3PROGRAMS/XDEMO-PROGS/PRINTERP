@@ -1,0 +1,10 @@
+MY.PRINTER = "Text"
+* Set Local Printer to given name
+SCRIPT = ''
+SCRIPT= 'Set Printer="':MY.PRINTER:'"'
+CALL WIN.HSCRIPTC(SCRIPT)
+PRINT CHAR(27):"[5i";* Slave On
+FOR X = 1 TO 100
+ PRINT X
+NEXT X
+PRINT CHAR(27):"[4i";* Slave Off

@@ -1,0 +1,87 @@
+*******************************************************************************
+*
+*       Program LOGFILE
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 9, 2021 10:37:24 AM
+*  Description:
+*
+*
+*****************************************************************************
+SUBROUTINE XTOOLSUB_EXECPRE(X_CODE, X_PARAMS,X_OUTDATA, X_ERROR)
+
+COMMON /AAA/ Logging, LogFile, LogFilePath
+Logging = 1
+BEGIN CASE
+CASE X_CODE = 99001
+* Return a 1 for admin user or 0 for non-admin
+X_OUTDATA = "0"
+X_ERROR = "X0"
+* code to determine if user is admin and ifso, set X_OUTOUT to 1
+IF @LOGNAME = "jadmin" THEN
+X_OUTDATA = 1
+GOTO InitLOG
+END
+CASE X_CODE = 99002
+* Return a bitmask of U2Activity options
+* 0 = none (same as it was before changes)
+* 1 = Enforce Admin
+* 2 = Show WEBDE/hide other
+* 4 = Show Mobility
+X_OUTDATA = "3" ;* Enforce admin user foradmin commands AND hide non-WEBDE stuff
+;* note that an admin willsee everything
+X_ERROR = "X0"
+GOTO InitLOG
+END CASE
+RETURN
+
+**************************************************
+* Debugging log file
+**************************************************
+InitLOG:
+IF Logging THEN
+
+    sys = SYSTEM(91)
+    IF sys = 1 THEN
+	* Windows NT system
+	OS.TYPE = "NT"
+    END ELSE
+	* UNIX system
+	OS.TYPE = "UNIX"
+    END
+
+	IF OS.TYPE = "UNIX" THEN
+	    LogFilePath = "/tmp/webdlog"
+	END ELSE
+	    LogFilePath = "C:\Temp\webdelog"
+	END   
+
+    LogFilePath = LogFilePath:"_":@DATE:"_":@TIME:".log"
+
+    OPENSEQ LogFilePath TO LogFile LOCKED PRINT "error" ELSE PRINT "error"
+    WRITESEQF "Start logging at ":OCONV(DATE(),'D2/'):" ":OCONV(TIME(),'MTHS') TO LogFile ELSE PRINT "error"
+    GOSUB LOG
+END
+RETURN
+
+LOG:
+
+*If FILEINFO(LogFile,0) is @TRUE then log output
+IF FILEINFO(LogFile,0) THEN
+
+    rec = "Code ":X_CODE:", Para ":X_PARAMS:", Error ":X_ERROR:", Out ":X_OUTDATA
+    WRITESEQF rec TO LogFile  ELSE PRINT "error"
+    WRITESEQF '' TO LogFile ELSE NULL
+    IF ErrorAndClearXOUTDATA THEN
+       X_OUTDATA = ''
+       ErrorAndClearXOUTDATA = 0
+    END
+    
+END
+RETURN
+END

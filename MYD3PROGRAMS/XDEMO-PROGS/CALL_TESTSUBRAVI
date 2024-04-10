@@ -1,0 +1,99 @@
+*******************************************************************************
+*
+*       Program CALL_TESTSUBRAVI
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Jul 7, 2023 11:08:35 AM
+*  Description:
+*
+*
+*****************************************************************************
+INPUT_STRING="P1":@VM:10:@FM:"P2":@VM:20
+RES = 0
+CALL TESTSUBRAVI(INPUT_STRING, RES)
+PRINT "SUM=":RES
+
+
+*Use case if the all the fields is seperated by only @AM/@FM
+firs_str= "P1"
+SEC_STR="p2"
+INPUT_STR= firs_str:@AM:10:SEC_STR:@AM:20
+PRINT "ravi INPUT_STR=":INPUT_STR
+INTPUT_STRING2="P1":@AM:10:@AM:"P2":@AM:20
+PRINT "ranjan INTPUT_STRING2=":INPUT_STR
+PRINT INTPUT_STRING2
+RES2= 0
+CALL TESTDARRAYWITHAM(INTPUT_STRING2, RES2)
+PRINT "SUM2=":RES2
+
+
+*Use Case if the attributes have @FM, @VM, @SM
+INPUT_VALUE = ""
+
+*Field 1 @FM
+INPUT_VALUE<1>="PERSON-DETAILS"
+PERSON = INPUT_VALUE
+*Field 1 vlue 1 @VM
+INPUT_VALUE<1,1>="NAME"
+
+*Field 1 vlue 2 @VM
+INPUT_VALUE<1,2>="FATHER-NAME"
+
+*Field 1 vlue 1 sub values @SM
+INPUT_VALUE<1,1,1>="FIRST-NAME"
+INPUT_VALUE<1,1,2>="LAST-NAME"
+
+*Field 1 vlue 2 sub values @SM
+INPUT_VALUE<1,2,1>="FATHER-FISRT-NAME"
+INPUT_VALUE<1,2,2>="FATHER-LAST-NAME"
+
+
+*Field 2
+INPUT_VALUE<2>="LOCATION"
+
+PERSON_LOCATION=INPUT_VALUE
+*Filed 2 vlaue  @VM
+INPUT_VALUE<2,1>="RES-ADDRESS"
+
+*Field 1 vlue 2 sub values @SM
+INPUT_VALUE<2,1,1>="CITY"
+INPUT_VALUE<2,1,2>="PINCODE"
+
+
+
+*Field 2 vlue 1 @VM
+INPUT_VALUE<2,2>="ORGANIZATION"
+
+INPUT_VALUE<2,2,1>="ORGANIZATION-HEAD-OFFICE"
+INPUT_VALUE<2,2,2>="ORGANIZATION-PRODUCT"
+
+INPUT_VALUE<2,1,1> = "BOSTON"
+
+
+
+PRINT "INPUT_VALUE=": INPUT_VALUE
+
+*INPUT_VALUE=FIRST-NAME:@SM:LAST-NAME:@VM:FATHER-FISRT-NAME:@SM:FATHER-LAST-NAME:@FM:CITY:@SM:PINCODE:@VM:ORGANIZATION-HEAD-OFFICE:@SM:ORGANIZATION-PRODUCT
+*
+*PERSON=FIRST-NAME:@SM:LAST-NAME:@VM:FATHER-FISRT-NAME:@SM:FATHER-LAST-NAME:@FM:CITY:@SM:PINCODE:@VM:ORGANIZATION-HEAD-OFFICE:@SM:ORGANIZATION-PRODUCT
+*PERSON-FIRST-NAME= 
+*PERSON-FULL-NAME   = PERSON<1,1,1>:"  ":PERSON<1,1,2>
+*PERSON-FATHER-NAME = PERSON<1,2,1>:"  ":PERSON<1,2,1>
+
+*/person/name/first_name : INPUT_VALUE<1,1,1>
+*/person/name/last_name  : INPUT_VALUE<1,1,2>
+
+*PERSON=FIRST-NAME:@SM:LAST-NAME:@VM:FATHER-FISRT-NAME:@SM:FATHER-LAST-NAME:@FM:CITY:@SM:PINCODE:@VM:ORGANIZATION-HEAD-OFFICE:@SM:ORGANIZATION-PRODUCT
+
+    
+
+
+ 
+
+
+

@@ -1,0 +1,18 @@
+:ct bp RWFILE
+
+    RWFILE
+001 SUBROUTINE UPDATERESOURCE(ID, FirstName, Result)
+002 * Res ID - Input
+003 * FirstName - Input
+004 * Result - Output. Success or failure condition.
+005 *
+006 OPEN 'ORDERS' TO MEMBERS.FILE ELSE STOP 201, 'members'
+007 inputID=ID
+008 READU item FROM MEMBERS.FILE,ID ELSE STOP 202, ID
+009 item<1>=FirstName
+010 WRITEU item ON MEMBERS.FILE,ID
+011
+012 Result = item
+013 print "Result=":Result
+014 CLOSE MEMBERS.FILE
+015 RETURN

@@ -1,0 +1,8 @@
+SUBROUTINE TESTSUB123(dynArray)
+SLEEP 5
+OUTPUT = ""
+OUTPUT<1> = "Doe, John"
+ OUTPUT<2> = "34"
+dynArray = OUTPUT
+RETURN
+END

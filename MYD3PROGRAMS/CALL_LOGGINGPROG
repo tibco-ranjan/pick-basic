@@ -1,0 +1,39 @@
+*******************************************************************************
+*
+*       Program CALL_LOGGINGPROG
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Jul 28, 2021 11:51:38 AM
+*  Description:
+*
+*
+*****************************************************************************
+X_PARAMS = ''
+X_OUTDATA= ''
+X_ERROR=''
+
+X_PARAMS<1>=100
+X_PARAMS<2>=20
+
+X_CODE = 1
+CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+X_CODE=2
+CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+*X_CODE=2
+*CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+*X_CODE=3
+*CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+*X_CODE=4
+*CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+*X_CODE=5
+*CALL LOGGINGPROG(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)

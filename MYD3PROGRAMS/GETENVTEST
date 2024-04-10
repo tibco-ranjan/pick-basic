@@ -1,0 +1,17 @@
+:ct bp GETENVTEST
+
+    GETENVTEST
+001 * Gets and displays the PATH environment variable
+002 cfunction unix.builtin
+003 pointer=(char*)%getenv('XTOOLSUBLOG')
+004 if pointer = 0 then
+005    print " XTOOLSUBLOG is not defined"
+006 end else
+007 * We got a C pointer the path variable. Copy it
+008 * into pick variable
+009    char path[1024]
+010    %strcpy(path, (char*)pointer)
+011    path = field(path,char(0),1)
+012    print path
+013 end
+014

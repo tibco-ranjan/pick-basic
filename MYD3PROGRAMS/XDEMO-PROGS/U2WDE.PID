@@ -1,0 +1,15 @@
+SUBROUTINE U2WDE.PID(PID)
+* Returns pid of the uniapi slave to the pooled session in the scheduler.
+***********************************************************************
+*     Rocket Software Confidential
+*     OCO Source Materials
+*     Copyright (C) Rocket Software, Inc.  2012, 2014
+*
+*
+********************************************
+$INCLUDE WWINCLUDE U2WDE.VERSION.INFO.H
+ *!1!A DECLARE GCI getpid
+ *!1!A PID = getpid()
+PID = @USERNO; *!99!C
+RETURN
+END

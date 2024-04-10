@@ -1,0 +1,22 @@
+*******************************************************************************
+*
+*       Program CALL_HTTPPOST
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 19, 2023 12:28:01 PM
+*  Description:
+*
+*
+*****************************************************************************
+*
+* postData json record
+*
+PRINT "Enter Unique Customer ID to create: "
+PRINT "CUSTID=":
+INPUT CUSTID
+CALL CALLHTTPPOST(CUSTID)

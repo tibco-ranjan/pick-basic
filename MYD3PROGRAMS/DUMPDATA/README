@@ -1,0 +1,94 @@
+-------------------------------------------
+Sample Dictionary file to dump the data
+------------------------------------------
+>WHO
+10 XDEMO From root
+
+>LIST DICT SAMPLEDATA
+DICT SAMPLEDATA    08:36:19pm  30 Sep 2021  Page    1
+
+               Type &
+Field......... Field. Field........ Conversion.. Column......... Output Depth &
+Name.......... Number Definition... Code........ Heading........ Format Assoc..
+
+@ID            D    0                            SAMPLEDATA      10L    S
+ID             D    0                            SAMPLEDATA      10L    S
+XREF           D    1                            XREF            10L    S
+RELATED_CLIENT D    2                            RELATED_CLIENT  10L    M
+APP_ID         D    3                            APP_ID          10L    M
+
+5 records listed.
+
+------------------------------------------------------
+Configuration file to provide number of input records
+--------------------------------------------------------
+LOCATION:  UVHOME:RecConfig
+root@dendevmvdtrav01:/tmp# cat /usr/uv/RecConfig
+RECORDS_COUNT=20
+
+Default RECORDS COUNT will be 50
+Note :
+This configuration file can be further use to provide another 
+important input to the application.
+
+As per the RECORDS_COUNT it will add 20 more records in the SAMPLEDATA data files.
+-----------------------------------------------------------------------
+DEBUG LOGGING is Enable and the default LOG location is /tmp/XTOOLSUB
+-----------------------------------------------------------------------
+The log path can be set with the configuration file "XTOOLDBG"
+root@dendevmvdtrav01:/tmp# cat /usr/uv/XTOOLDBG
+/tmp/XTOOLSUB
+
+root@dendevmvdtrav01:/tmp# cat XTOOLSUB_19632_76001.log
+Start logging at 09/30/21 09:06:41pm
+Code 3, Para , Error 0, Out MV Platform=0 MV Version=72445813 MV UVHOME=/usr/uv OS.TYPE=UNIX OS.SEP=/
+
+Code 3, Para , Error 0, Out BEFORE DUMP RECORD COUNT= 76 AFTER DUMP RECORD COUNT=96
+
+root@dendevmvdtrav01:/tmp#
+--------------------------------------------------------
+HOST details
+--------------------------------------------------------
+HOST : dendevmvdtrav01.dev.rocketsoftware.com
+ACCOUNT : XDEMO
+UV 12.1.1
+
+--------------------------------------------------------
+USES of the application and output
+--------------------------------------------------------
+1. Create a DICTIONARY FILE SAMPLEDATA in a UV account e.g XDEMO
+2. Copy the application program DUMP_SAMPLEDATA.B in the BP folder of XDEMO account.
+3. Copy the include LOGGING.H in the XDEMO include folder
+4. Copy the caller program CALL_DUMPDATA.B in the BP folder
+5. COMPILE AND CATALOG the program.
+6. RUN the CALL_DUMPDATA.B
+7. Verify the working with following ways.
+
+----------------------------------
+Verification
+---------------------------------
+1. Look if the XTOOLSUB log file generated as shown above.
+2. LIST the SAMPLEDATA data file if the configured RECORDS_COUNT records created or not.
+
+Note: The records are generated dynamically no manual intervention required to enter the records.
+
+>LIST SAMPLEDATA
+
+LIST SAMPLEDATA 08:29:34pm  30 Sep 2021  PAGE
+SAMPLEDATA
+.
+.
+.
+
+63
+66
+69
+72
+75
+-----------------------------END------------------------
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+ *!1!A DECLARE GCI getpid
+ *!1!A PID = getpid()
+PID = @USERNO; *!99!C
+ECHO "PID=":PID
+PRINT "PID=":PID

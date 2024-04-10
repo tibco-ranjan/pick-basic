@@ -1,0 +1,52 @@
+*******************************************************************************
+*
+*       Program CALLHTTPPOST
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 19, 2023 12:09:58 PM
+*  Description:
+*
+*
+*****************************************************************************
+*
+SUBROUTINE CALLHTTPPOST(CUSTID)
+
+logfile="restpost"
+url="http://localhost:9191/XDEMO/Members"
+*
+method="POST"
+*
+stat = protocolLogging(logfile, "ON", 10)
+stat = setHTTPDefault("VERSION", "1.1")
+
+*
+* Customer Record to be written to record CUSTID
+*
+
+postData=""
+postDATA='{'
+postDATA:=' "birthdate" : "11/07/1954",'
+postDATA:=' "first_name" : "Neddy",'
+postDATA:=' "id" : "2900"'
+postDATA:='}'
+*
+CRT
+stat = createRequest(url, method, restPOST)
+stat = setRequestHeader(restPOST, "Content-Type", "application/json; charset=utf-8")
+stat = submitRequest(restPOST, 5000, postDATA, Header, restData, httpStatus)
+* POST response
+restData=CHANGE(restData, "{", "{":CHAR(10))
+restData=CHANGE(restData, ",", ",":CHAR(10))
+restData=CHANGE(restData, "}", "}":CHAR(10))
+PRINT "Response status: ":httpStatus
+PRINT "Response headers:":Header
+PRINT "Response data:":CHAR(10):restData
+*
+stat = protocolLogging(logfile, "OFF", 10)
+restPOST=""
+END

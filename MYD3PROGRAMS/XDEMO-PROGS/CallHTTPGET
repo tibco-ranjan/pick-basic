@@ -1,0 +1,41 @@
+*******************************************************************************
+*
+*       Program CallHTTPGET
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 19, 2023 11:56:46 AM
+*  Description:
+*
+*
+*****************************************************************************
+SUBROUTINE CallHTTPGET(CUSTID)
+
+logfile = "restget"
+stat = protocolLogging(logfile, "ON", 10)
+
+*
+* URL returned as html or json data
+* url="http://den-l-nk01.rocketsoftware.com:9191/HS_SALES/Customer/":CUSTID:"?tohtml=true"
+url="http://localhost:9191/XDEMO/Members/":CUSTID
+method="GET"
+*
+stat = setHTTPDefault("VERSION", "1.1")
+stat = createRequest(url, method, restGET)
+stat = setRequestHeader(restGET, "Content-Type", "application/json;charset=utf-8")
+stat = submitRequest(restGET, 5000, "", Header, restData, httpStatus)
+* GET response parser
+restData=CHANGE(restData, "{", "{":CHAR(10))
+restData=CHANGE(restData, ",", ",":CHAR(10))
+restData=CHANGE(restData, "}", "}":CHAR(10))
+*
+PRINT "Response status: ":httpStatus
+PRINT "Response headers:":Header
+PRINT "Response data:":CHAR(10):restData
+*
+a = protocolLogging(logfile, "OFF", 10)
+END

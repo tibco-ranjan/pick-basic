@@ -1,0 +1,35 @@
+SUBROUTINE testxtool(X_OUTDATA)
+WhoAmI = "Main Program XTOOLSUB"
+X_OUTDATA = ''
+X_ERROR = 0
+X_CODE = 3
+DT = DATE()
+TM = OCONV(TIME(), 'MTHS')
+X_OUTDATA<1> = OCONV(DT, 'DM')
+X_OUTDATA<2> = OCONV(DT, 'DD')
+X_OUTDATA<3> = OCONV(DT, 'DY')
+X_OUTDATA<4> = FIELD(TM, ':', 1)
+X_OUTDATA<5> = FIELD(TM, ':', 2)
+X_OUTDATA<6> = FIELD(TM, ':', 3) 'MCN'
+*LogStmt = @DATE:"  ":"From ":WhoAmI
+*GOSUB InitLOG
+RETURN
+**************************************************
+* Debugging log file
+*************************************
+InitLOG:
+* 34295 If Logging is @TRUE then log output
+Logging = 1
+IF Logging THEN
+     LogFilePath = "C:\tmp\" 
+     OPEN LogFilePath TO LogFile  then
+         LogStmt = LogStmt:" Open the LogFilePath  ":LogFilePath
+     end else  
+         LogStmt =LogStmt:" Couldn't Open the LogFilePath  ":LogFilePath
+     end
+     WRITEV  "Start logging at ":OCONV(DATE(),'D2/'):" ":OCONV(TIME(),'MTHS') ON LogFile,"TXTOOLSUB.LOG", -1
+     rec = LogStmt :" Code ":X_CODE:", Out ":X_OUTDATA
+     WRITEV rec ON LogFile,"TXTOOLSUB.LOG", -1
+END
+RETURN
+RETURN

@@ -1,0 +1,5 @@
+*program main
+X = ""
+print "Calling Test Java Demo GETTIME SUBROUTINE"
+CALL JAVA.DEMO.GETTIME(X)
+print "====End of program===="

@@ -1,0 +1,30 @@
+*program main
+X_OUTDATA = ""
+X_PARAMS=0
+X_ERROR = ""
+
+print "Calling Initialize x_code=0"
+call XTOOLSUB(0, "", X_OUTDATA, X_ERROR)
+
+print "Calling account list x_code=1"
+call  XTOOLSUB(1,"", X_OUTDATA, X_ERROR)
+
+print "Calling GetFiles x_code=4"
+call  XTOOLSUB(3,"", X_OUTDATA, X_ERROR)
+
+print "Calling ReadDict  x_code=33"
+call XTOOLSUB(33, X_PARAMS, X_OUTDATA, X_ERROR)
+
+print "Calling LogtoAccount x_code=2"
+print "Logging to account MVDEMO"
+
+print "Calling GetCTLGFiles  x_code=46"
+call XTOOLSUB(46, X_PARAMS, X_OUTDATA, X_ERROR)
+
+call  XTOOLSUB(2,"MVDEMO", X_OUTDATA, X_ERROR)
+
+print "X_OUTDATA=":"  ":X_OUTDATA
+print "X_ERROR=":" ":X_ERROR
+
+
+

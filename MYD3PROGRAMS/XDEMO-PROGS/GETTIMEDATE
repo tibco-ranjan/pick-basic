@@ -1,0 +1,23 @@
+*******************************************************************************
+*
+*       Program GETTIMEDATE
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Sep 22, 2023 12:33:35 PM
+*  Description:
+*
+*
+*****************************************************************************
+PRINT "NOW PRINTING DATE AND TIME"
+
+PRINT  OCONV(SYSTEM(12),"MMSM") : " " : TIMEDATE()
+SLEEP 5
+*PRINT  OCONV(NOW(), "DT")
+FOR VAR=1 TO 100
+  NEXT VAR
+PRINT  OCONV(SYSTEM(12),"MMSM") : " " : TIMEDATE()

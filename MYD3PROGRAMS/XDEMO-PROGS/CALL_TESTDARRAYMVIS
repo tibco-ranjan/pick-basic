@@ -1,0 +1,32 @@
+*******************************************************************************
+*
+*       Program CALL_TESTDARRAYMVIS
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Sep 25, 2023 11:22:59 AM
+*  Description:
+*
+*
+*****************************************************************************
+DA_ID = ''
+DA_ID<1> = 1020
+DA_OUTPUT_1 = ''
+Result = ''
+FailureReason = ''
+CALL TESTDARRAYMVIS(DA_ID, DA_OUTPUT_1, Result, FailureReason)
+
+PRINT "-------------------------------"
+PRINT "After call "
+PRINT "-------------------------------"
+PRINT "MEMBERS=":DA_ID<1>
+PRINT "Last Name=":DA_OUTPUT_1<1>
+PRINT "Address=":DA_OUTPUT_1<5>
+PRINT "City=":DA_OUTPUT_1<6>
+PRINT "STATE=":DA_OUTPUT_1<7>
+PRINT "ZIP=":DA_OUTPUT_1<8>
+PRINT "-------------------------------"

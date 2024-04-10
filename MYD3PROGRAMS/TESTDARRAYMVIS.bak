@@ -1,0 +1,74 @@
+*******************************************************************************
+*
+*       Program TESTDARRAYMVIS
+*       
+*       Copyright (C) 2023
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Sep 25, 2023 11:19:41 AM
+*  Description:
+*
+*
+*****************************************************************************
+SUBROUTINE TESTDARRAYMVIS(DA_ID, DA_OUTPUT_1, Result, FailureReason)
+* Res ID - Input--DA_ID<1>
+* Output Fields: DA_OUTPUT_1
+* FirstName - Input
+* Result - Output. Success or failure condition.
+* FailureReason - details of the failure
+*
+EXECUTE 'LOGTO XDEMO'
+Result = 0 ; *Success Condition
+OPEN "", "MEMBERS" TO MEMBERS ELSE ; * Open MEMBERS file
+Result = 1 ; * Failure Condition
+FailureReason = "Unable to open MEMBERS file"
+RETURN
+END
+*
+ID=DA_ID<1>
+MEM.REC=''
+PRINT "-------------------------------"
+PRINT "Before call "
+PRINT "-------------------------------"
+PRINT "MEMBERS=":DA_ID<1>
+PRINT "Last Name=":DA_OUTPUT_1<1>
+PRINT "Address=":DA_OUTPUT_1<5>
+PRINT "City=":DA_OUTPUT_1<6>
+PRINT "STATE=":DA_OUTPUT_1<7>
+PRINT "ZIP=":DA_OUTPUT_1<8>
+PRINT "-------------------------------"
+
+*FOR CTR=1 TO 30
+*ID=ID+CTR
+READ MEM.REC FROM MEMBERS, ID THEN 
+       *SLEEP 5
+        Result = 1
+        PRINT "Successfully Read the Record for ID=":ID
+        PRINT "Record=":MEM.REC
+END ELSE
+        Result = 0
+        FailureReason = 'Failed to read record ':ID:' with STATUS= ':STATUS()        
+END
+MEM.REC<6>=MEM.REC<6>:"   ":"Ravi changed the City"
+WRITE MEM.REC ON MEMBERS, ID ON ERROR
+                        *SLEEP 5
+            Result = 0
+                        FailureReason = 'Failed to update record ':ID:' with STATUS= ':STATUS()
+END
+*NEXT CTR
+*
+
+DA_OUTPUT_1<1>=MEM.REC<1>
+DA_OUTPUT_1<5>=MEM.REC<5>
+DA_OUTPUT_1<6>=MEM.REC<6>
+DA_OUTPUT_1<7>=MEM.REC<7>
+DA_OUTPUT_1<8>=MEM.REC<8>
+
+
+*
+RETURN
+
+END

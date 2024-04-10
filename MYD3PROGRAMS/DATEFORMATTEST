@@ -1,0 +1,16 @@
+001 SUBROUTINE DATEFORMATTEST(ID, FirstName, Result)
+002 * Res ID - Input
+003 * FirstName - Input
+004 * Result - Output. Success or failure condition.
+005 *
+006
+007 print "passing date() output"
+008
+009 convDate2 = oconv(date(),"d-")
+010 convTime = oconv(time(),"mts")
+011 print "convTime":convTime
+012 print "convDate ":convDate2
+013 onlytime=time()
+014 print "onlytime=":onlytime
+015
+016 RETURN

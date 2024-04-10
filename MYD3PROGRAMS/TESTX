@@ -1,0 +1,27 @@
+[405] 23 items listed out of 23 items.
+:ct bp TESTX
+
+    TESTX
+001 *program main
+002 X_OUTDATA = ""
+003 X_PARAMS=0
+004 X_ERROR = ""
+005
+006 print "Calling Initialize x_code=0"
+007 call XTOOLSUB(0, "", X_OUTDATA, X_ERROR)
+008
+009 print "Calling account list x_code=1"
+010 call  XTOOLSUB(1,"", X_OUTDATA, X_ERROR)
+011
+012 print "Calling GetFiles x_code=4"
+013 call  XTOOLSUB(3,"", X_OUTDATA, X_ERROR)
+014
+015 print "Calling LogtoAccount x_code=2"
+016 print "Logging to account MVDEMO"
+017 call  XTOOLSUB(2,"MVDEMO", X_OUTDATA, X_ERROR)
+018
+019 print "Calling GetCTLGFiles  x_code=46"
+020 call XTOOLSUB(46, X_PARAMS, X_OUTDATA, X_ERROR)
+021
+022 print "X_OUTDATA=":"  ":X_OUTDATA
+023 print "X_ERROR=":" ":X_ERROR

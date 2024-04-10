@@ -1,0 +1,49 @@
+X_CODE = 30
+X_PARAMS=''
+X_OUTDATA=''
+X_ERROR=''
+
+X_PARAMS<1>='/usr/uv'
+X_PARAMS<2>='TESTACC'
+X_PARAMS<2>=1
+
+CALL XTOOLSUB(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+PRINT 'X_OUTDATA=': X_OUTDATA
+PRINT 'X_ERROR=': X_ERROR
+
+ReadSinleMetaDataYml
+ReadSingleMetaDataYml:
+     name = X_PARAMS<1>
+     mvisdefnPath = X_PARAMS<2>
+       OS.SEP = ""
+  IF SYSTEM(91) THEN
+        OS.SEP = "\"
+  END ELSE
+        OS.SEP = "/"
+  END
+    IF mvisdefnPath = "" THEN
+              mvisdefnPath  = SYSTEM(31)
+    END
+*For UV FileName = SYSTEM(32):OS.SEP:"MVDEFN":OS.SEP:"ENDPOINT":OS.SEP:name
+ FileName = mvisdefnPath:OS.SEP:"MVISDEFN":OS.SEP:"ENDPOINT":OS.SEP:name
+ X_OUTDATA= FileName
+ X_OUTDATA= "READ: Starts"
+ GOSUB LOG
+   record = ''
+   DONE = 0
+   OPENSEQ FileName TO readFD THEN 
+       rcount = 1
+       LOOP
+           READSEQ record FROM readFD ELSE DONE= 1
+       UNTIL DONE DO
+            X_OUTDATA<rcount> = record
+            rcount = rcount + 1
+       REPEAT
+       CLOSESEQ readFD
+       RETURN
+   END ELSE 
+      X_OUTDATA= 'Could not open the File  ':FileName: ' With the Error Status':STATUS()
+      GOSUB LOG           
+      RETURN
+   END
+RETURN

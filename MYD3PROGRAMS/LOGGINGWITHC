@@ -1,0 +1,48 @@
+:ct bp LOGGINGWITHC
+
+    LOGGINGWITHC
+001 SUBROUTINE LOGGINGWITHC(ID)
+002 * Res ID - Input
+003 * FirstName - Input
+004 * Result - Output. Success or failure condition.
+005 *
+006 include dm,bp,unix.h fcntl.h
+007 LogFile="XTOOLSUB"
+008 LogFilePath="C:\Temp\"
+009 LogStmt="LOGGINGWITHC"
+010 X_CODE=45
+011 X_PARAMS="PARAM"
+012 X_ERROR="PASS"
+013 X_OUTDATA="OUT DATA"
+014 *Get the Logging Path.
+015 IF LogFilePath <> "" THEN
+016    LogDate = oconv(date(),"d-")
+017    LogTime = time()
+018    LogFile = LogFilePath:LogFile:"_":LogDate:"_":LogTime:".log"
+019 END
+020
+021 PRINT "The log file ":LogFile
+022
+023  fd=%open(LogFile, o$creat+o$wronly+o$append)
+024  if fd<0 then
+025     PRINT "Cannot open. errno=":system(0)
+026     RETURN
+027  end
+028
+029 PRINT "Open the File with FD: ":fd
+030
+031 timestamp = OCONV(DATE(),'D2/'):" ":OCONV(TIME(),'MTHS')
+032 item = LogStmt :" Code ":X_CODE:", Para ":X_PARAMS:", Error ":X_ERROR:", Out ":X_OUTDATA
+033 writeInLog=timestamp:"   ":item
+034 n = len(writeInLog)
+035 if %write(fd,writeInLog,n)<n then
+036    PRINT "write error"
+037 END
+038
+039 if %close(fd) then
+040    PRINT "Cannot close file"
+041    stop
+042 end
+043
+044 PRINT "Done with the writing"
+045 RETURN

@@ -1,0 +1,9 @@
+SUBROUTINE TESTUVDARRAY(in_darray_param, out_darray_param)
+*IN_PARAM_ADDR - Input 
+* OUT_PARAM_ADDR- output
+* Result - Output. Success or failure condition.
+*
+out_darray_param<1>=in_darray_param<1>
+out_darray_param<2>=in_darray_param<3>
+out_darray_param<3>=in_darray_param<8>
+END

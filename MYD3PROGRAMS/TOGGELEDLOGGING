@@ -1,0 +1,22 @@
+:ct bp TOGGELEDLOGGING
+
+    TOGGELEDLOGGING
+001 SUBROUTINE RWXLOGTEST(SetLogging, CheckLogging )
+002 * Res ID - Input
+003 * SetLogging, - Input
+004 * Result - Output. Success or failure condition.
+005 *
+006 OPEN 'XTOOLSUBLOG' TO XTOOLSUBLOG.FILE ELSE STOP 201, 'xtoolsublog'
+007 ID=1
+008 READU item FROM  XTOOLSUBLOG.FILE,ID ELSE STOP 202, ID
+009 CheckLogging = item<1>
+010 PRINT "Got item item<1>=":item<1>
+011 PRINT "CheckLogging =":CheckLogging
+012
+013 IF CheckLogging = "ON" THEN
+014     Logging = 1
+015 END ELSE
+016     Logging = 0
+017 END
+018
+019 RETURN

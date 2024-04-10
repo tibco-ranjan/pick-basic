@@ -1,0 +1,197 @@
+*******************************************************************************
+*
+*       Program READANDWRITEAFILE
+*       
+*       Copyright (C) 2022
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Jun 13, 2022 7:51:35 PM
+*  Description:
+*
+*
+*****************************************************************************
+*X_CODE : To decide the operations.
+*IN_ACCOUNT_NAME: Account name
+*IN_ENDP_ID: Endpoint name
+*IN_ENDP_DATA: Dynamic array cantins each line of the ymal file as a element.
+*OUT_ENDP_REC: Return the whole file content in the form of an dynamic array.
+
+
+SUBROUTINE READANDWRITEAFILE(X_CODE, IN_ACCOUNT_NAME, IN_ENDP_ID, IN_ENDP_DATA, OUT_ENDP_REC)
+
+*Helper funtion to get the path (UV Platfrom)
+    ETOOL.FILEEXIST = 20000
+    X_ERROR = 0
+    sys = SYSTEM(91)
+    X_OUTDATA="MV Platform=": sys 
+    ver = SYSTEM(31)
+    UVHOME = SYSTEM(32)
+    X_OUTDATA=X_OUTDATA:" MV Version=": ver 
+    X_OUTDATA=X_OUTDATA:" MV UVHOME=": UVHOME
+    
+    *Initialize OS.TYPE and OS.SEP   
+    IF sys = 0 THEN
+        OS.TYPE = "UNIX"
+        OS.SEP = "/"
+    END ELSE
+        OS.TYPE = "NT"
+        OS.SEP = "\"
+    END
+    
+    X_OUTDATA=X_OUTDATA:" OS.TYPE=": OS.TYPE
+    X_OUTDATA=X_OUTDATA:" OS.SEP=": OS.SEP
+    PRINT "System Details=  ":X_OUTDATA
+    
+ *Helper funtion to get the PLATFORM OS.SEP path (UD Platform)  
+*    sys = SYSTEM(33)
+*    ver = SYSTEM(45)
+*    UDHOME = SYSTEM(31)
+*    
+*    IF sys = "UNIX" THEN
+*    OS.TYPE = "UNIX"
+*        OS.SEP = "/"
+*    END ELSE
+*    OS.TYPE = "NT"
+*        OS.SEP = "\"
+*    
+*    X_OUTDATA_UD='UDHOME=':UDHOME:' OS.SEP=':OS.SEP:'  OS.TYPE=':OS.TYPE
+*    PRINT "UD System Details=  ":X_OUTDATA_UD
+*    END
+    
+
+*Declare the location to read and write the file
+   endpointFileDir=UVHOME:OS.SEP:'mvdefn'
+   endpointFileName=IN_ACCOUNT_NAME:'_':IN_ENDP_ID
+   endpointFile=endpointFileDir:OS.SEP:'BP':OS.SEP:endpointFileName
+   
+   PRINT "The endpointFileDir=":endpointFileDir
+   PRINT "The endpointFileName=":endpointFileName
+   PRINT "The endpointFile=":endpointFile
+  
+   EXECUTE "LOGTO ":UVHOME:OS.SEP:'mvdefn'
+
+ IF X_CODE = 3 THEN
+   GOTO WriteMetaDataYml
+ END ELSE
+   GOTO  READEENDPOINTFILE
+ END
+
+   *Note: If a file doesn't exit, WRITESEQ creates that file.
+   WRITEENDPOINTFILE:
+        PRINT "Write: Starts"     
+        IF NOT(FILEINFO(writeFD, 0)) THEN
+            OPENSEQ endpointFile TO writeFD ELSE PRINT ''
+            *Note; Putting the WOFSEQ jut after the OPENSEQ truncate the exiting old file completely            
+            WEOFSEQ writeFD
+            NO_OF_LINES=DCOUNT(IN_ENDP_DATA, @FM)
+            PRINT "NO OF RECORDS=":NO_OF_LINES
+            FOR ENTRY = 1 TO NO_OF_LINES
+                RECVALUE = IN_ENDP_DATA<ENTRY>
+                WRITESEQ RECVALUE APPEND TO writeFD 
+                ELSE PRINT "FAILED TO WRITE ":IN_ENDP_DATA<ENTRY>:"  to the DataFile" 
+                OUT_ENDP_REC<ENTRY> = RECVALUE
+            NEXT ENTRY
+            *Note: After completion of the writeseq putting WEOFSEQ ensure the ENO of the file.
+            WEOFSEQ writeFD
+            CLOSESEQ writeFD 
+            PRINT "DONE with the WRITING"         
+        END        
+    RETURN
+
+    READEENDPOINTFILE:
+        PRINT "READ: Starts"
+        record = ''
+        DONE = 0
+        OPENSEQ endpointFile TO readFD ELSE PRINT ''        
+        rcount = 1
+        LOOP
+            READSEQ record FROM readFD ELSE DONE= 1            
+        UNTIL DONE DO
+             OUT_ENDP_REC<rcount> = record
+             rcount = rcount + 1
+        REPEAT
+        CLOSESEQ readFD
+        PRINT "READ:Done with the Read"  
+    RETURN
+    
+    WriteMetaDataYml:
+        PRINT "Write: Starts"
+        GOSUB LOG
+        
+            OPENSEQ endpointFile TO writeFD ELSE PRINT ''            
+            *Note; Putting the WOFSEQ jut after the OPENSEQ truncate the exiting old file completely
+            WEOFSEQ writeFD
+            NO_OF_LINES=DCOUNT(IN_ENDP_DATA, @FM)
+            PRINT "NO OF RECORDS=":NO_OF_LINES
+            X_OUTPUT = "Start Wriing into the file"
+            FOR ENTRY = 1 TO NO_OF_LINES
+                RECVALUE = IN_ENDP_DATA<ENTRY>
+                WRITESEQ RECVALUE APPEND TO writeFD
+                *WRITESEQ RECVALUE TO writeFD
+                    ELSE X_OUTDATA= "FAILED TO WRITE ":IN_ENDP_DATA<ENTRY>:"  to the DataFile":X_ERROR:" ":STATUS()
+                OUT_ENDP_REC<ENTRY> = RECVALUE
+                GOSUB LOG
+            NEXT ENTRY
+            *Note: After completion of the writeseq putting WEOFSEQ ensure the ENO of the file.
+            WEOFSEQ writeFD
+            CLOSESEQ writeFD
+            PRINT "DONE with the WRITING"
+            GOSUB LOG
+        
+        
+        LOG:
+            PRINT "X_ERROR=":X_ERROR
+            PRINT "X_OUTPUT=":X_OUTDATA
+RETURN
+
+END
+
+
+********************
+*Output
+*******************
+*:.X1
+*RUN BP CALL_READANDWRITEAFILE
+*UD System Details=  UDHOME=C:\U2\ud82 OS.SEP=\  OS.TYPE=NT
+*The endpointFileDir=C:\U2\ud82\mvdefn
+*The endpointFileName=XDEMO_PERSON
+*The endpointFile=C:\U2\ud82\mvdefn\BP\XDEMO_PERSON
+*Write: Starts
+*NO OF RECORDS=2
+*DONE with the WRITING
+*UD System Details=  UDHOME=C:\U2\ud82 OS.SEP=\  OS.TYPE=NT
+*The endpointFileDir=C:\U2\ud82\mvdefn
+*The endpointFileName=XDEMO_PERSON
+*The endpointFile=C:\U2\ud82\mvdefn\BP\XDEMO_PERSON
+*READ: Starts
+*READ:Done with the Read
+*NO OF RECORDS=2
+*This is to test first line
+*This is to test second line
+*:
+*:
+*:
+*:
+*:.X1
+*RUN BP CALL_READANDWRITEAFILE
+*UD System Details=  UDHOME=C:\U2\ud82 OS.SEP=\  OS.TYPE=NT
+*The endpointFileDir=C:\U2\ud82\mvdefn
+*The endpointFileName=XDEMO_PERSON
+*The endpointFile=C:\U2\ud82\mvdefn\BP\XDEMO_PERSON
+*Write: Starts
+*NO OF RECORDS=2
+*DONE with the WRITING
+*UD System Details=  UDHOME=C:\U2\ud82 OS.SEP=\  OS.TYPE=NT
+*The endpointFileDir=C:\U2\ud82\mvdefn
+*The endpointFileName=XDEMO_PERSON
+*The endpointFile=C:\U2\ud82\mvdefn\BP\XDEMO_PERSON
+*READ: Starts
+*READ:Done with the Read
+*NO OF RECORDS=2
+*This is to test first line
+*This is to test second line
+
+

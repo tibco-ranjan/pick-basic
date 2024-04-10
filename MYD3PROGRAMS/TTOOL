@@ -1,0 +1,5 @@
+*program main
+X_OUTDATA = ''
+X_PARAMS='MEMBERS'
+print "Calling Initialize x_code=3"
+call FILEDEMOTOOL(X_OUTDATA,X_PARAMS)

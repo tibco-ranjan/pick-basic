@@ -1,0 +1,178 @@
+cd *******************************************************************************
+*
+*       Program DUMP_SAMPLEDATA.B
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Sep 30, 2021 10:23:42 AM
+*  Description:
+*
+*
+*****************************************************************************
+SUBROUTINE DUMP_SAMPLEDATA.B(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+
+$INCLUDE INCLUDE LOGGING.H
+
+ON X_CODE GOSUB SUBFINISH,
+    INITIALISE,
+	DUMPDATA
+
+******************************************
+* Initialization function 
+******************************************
+INITIALISE:
+	*Get the system information
+	sys = SYSTEM(91)
+	X_OUTDATA="MV Platform=": sys 
+	ver = SYSTEM(31)
+	UVHOME = SYSTEM(32)
+	X_OUTDATA=X_OUTDATA:" MV Version=": ver 
+	X_OUTDATA=X_OUTDATA:" MV UVHOME=": UVHOME
+	
+	*Initialize OS.TYPE and OS.SEP   
+	IF sys = 0 THEN
+	    OS.TYPE = "UNIX"
+	    OS.SEP = "/"
+	END ELSE
+		OS.TYPE = "NT"
+	    OS.SEP = "\"
+	END
+	
+	X_OUTDATA=X_OUTDATA:" OS.TYPE=": OS.TYPE
+	X_OUTDATA=X_OUTDATA:" OS.SEP=": OS.SEP
+	
+    Logging = @FALSE
+    LogFilePath=""    
+	OPENSEQ UVHOME:OS.SEP:"XTOOLDBG" TO XTOOLDBG THEN
+       READSEQ LogFilePath FROM XTOOLDBG ELSE LogFilePath=""
+       Logging = 1
+       CLOSESEQ XTOOLDBG
+    END
+    GOSUB InitLOG
+    GOSUB LOG
+    
+RETURN TO SUBFINISH
+
+************************************************
+*DUMP_DATA utiltiy
+************************************************
+DUMPDATA:
+	*Default Record count to dump
+	 RecCount=50
+	 X_OUTDATA=''
+	 
+	*Read the configuration file UVHOME/RecConfig for number of records to dump
+	OPENSEQ UVHOME:OS.SEP:"RecConfig" TO ReadConfigFile ELSE PRINT "error in OPENSEQ"
+	IF FILEINFO(ReadConfigFile,0) THEN
+		READSEQ rcCount FROM  ReadConfigFile ELSE recCount=RecCount		
+		RecCount=FIELD(rcCount,'=',2)
+		PRINT "RecCount=":RecCount
+		X_OUTDATA=" Number of records to dump=":RecCount		
+	END
+	CLOSESEQ ReadConfigFile
+	*GOSUB LOG
+	
+	X_OUTDATA=''
+	*Open the SAMPLEDATA Data file 
+	OPEN 'SAMPLEDATA' TO FDSAMPLE ELSE
+	    X_ERROR = ETOOL.OPENFILE
+	    X_OUTDATA = 'Failed to open the file: SAMPLEDATA STATUS= ':STATUS()
+	    STOP @(10,10):'Failed to open SAMPLEDATA File'
+	END
+	
+	*Get the Existing record count
+	HUSH ON
+    EXECUTE "SELECT SAMPLEDATA TO 2"
+    HUSH OFF
+    
+  	CurrentRecordCount= SELECTINFO(2,3)
+	CurrentRecordCount= CurrentRecordCount + 1    
+	
+	*Add the records into the SAMPLEDATA file, after the existing records	
+	RecCount = RecCount+ CurrentRecordCount 
+	*PRINT 'Start writing records in SAMPLEDATA file'
+	X_OUTDATA="BEFORE DUMP RECORD COUNT= ":CurrentRecordCount
+	
+	*Dummy data to increase the size of every record by 100KB
+	TEXTVAL = ''
+	FOR CTR=1 TO 100
+		TEXTVAL = TEXTVAL:'Dummy Data':FIXEDVAL
+	NEXT CTR
+	
+	*PRINT "The added suffix":TEXTVAL
+	FOR NEW_REC_ID=CurrentRecordCount TO RecCount
+		REC_NEW=''
+		REC_NEW<1>=CurrentRecordCount * REC1 + CurrentRecordCount
+		REC_NEW<2,1>=CurrentRecordCount * REC21 + CurrentRecordCount
+		REC_NEW<2,2>=CurrentRecordCount * REC22 + CurrentRecordCount
+		REC_NEW<3,1>=CurrentRecordCount * REC31 + CurrentRecordCount
+		REC_NEW<3,2>=CurrentRecordCount * REC32 + CurrentRecordCount
+		
+		*Append each record value with a fixed suffix to 
+		*flatten the records.
+		*To Do: Make it configurable with RecConfig
+		*       Add BigData=1/0, Default BigData=0
+		REC_NEW<1>= REC_NEW<1>:'_Rec_new_1':TEXTVAL
+		REC_NEW<2,1>= REC_NEW<2,1>:'_Rec_new_2_1':TEXTVAL
+		REC_NEW<2,2>= REC_NEW<2,2>:'_Rec_new_2_2':TEXTVAL
+		REC_NEW<3,1>= REC_NEW<3,1>:'_Rec_new_3_1':TEXTVAL
+		REC_NEW<3,2>= REC_NEW<3,2>:'_Rec_new_3_2':TEXTVAL
+				
+		WRITE REC_NEW ON FDSAMPLE, NEW_REC_ID ON ERROR
+			X_ERROR = ETOOL.WRITEFAIL
+			X_OUTDATA = 'Failed to write for record ID ':NEW_REC_ID:' with STATUS= ':STATUS()		
+			STOP @(10,10):'Failed to write RECORDS in SAMPLEDATA File'
+		END
+	NEXT NEW_REC_ID
+	CLOSE FDSAMPLE
+	
+	*Get the Existing record count after writing into the data file.
+	HUSH ON
+    EXECUTE "SELECT SAMPLEDATA TO 3"
+    HUSH OFF
+		
+	CurrentRecordCount= SELECTINFO(3,3)	
+	X_OUTDATA=X_OUTDATA:"  AFTER DUMP RECORD COUNT=":CurrentRecordCount
+
+	GOSUB LOG
+	
+RETURN TO SUBFINISH
+
+**************************************************
+* Debugging log file
+*************************************
+InitLOG:
+* If Logging is @TRUE then log output
+	IF Logging THEN
+	    IF LogFilePath = "" THEN
+		IF OS.TYPE = "UNIX" THEN
+		    LogFilePath = "/tmp/XTOOLSUB"
+		END ELSE
+		    LogFilePath = "C:\tmp\XTOOLSUB"
+		END
+	    END
+	
+	    LogFilePath = LogFilePath:"_":@DATE:"_":@TIME:".log"
+	
+	    *OPENSEQ LogFilePath TO LogFile LOCKED PRINT "File Locked" ELSE PRINT "Done"
+	    OPENSEQ LogFilePath TO LogFile ELSE PRINT "Done"
+	    WRITESEQF "Start logging at ":OCONV(DATE(),'D2/'):" ":OCONV(TIME(),'MTHS') TO LogFile ELSE PRINT "Done"
+	END
+RETURN
+
+LOG:	
+	IF FILEINFO(LogFile,0) THEN        
+	    rec = "Code ":X_CODE:", Para ":X_PARAMS:", Error ":X_ERROR:", Out ":X_OUTDATA
+	    WRITESEQF rec TO LogFile  ELSE PRINT "Done"
+	    WRITESEQF '' TO LogFile ELSE NULL   
+	END
+RETURN TO SUBFINISH
+
+SUBFINISH:
+RETURN
+
+END

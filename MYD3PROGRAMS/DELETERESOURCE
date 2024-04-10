@@ -1,0 +1,18 @@
+:ct bp DELETERESOURCE
+
+    DELETERESOURCE
+001 SUBROUTINE DELETERESOURCE(ID,RESPONSE)
+002 Result = 0;*Success Condition
+003 OPEN "","MEMBERS" TO MEMBERS ELSE ; * Open MEMBERS file
+004 Result = 1 ; * Failure Condition
+005 RESPONSE= "Unable to open MEMBERS file"
+006 RETURN
+007 END
+008 *
+009 DELETE  MEMBERS, ID ; *     delete away record to the MEMBERS file
+010 Result = STATUS()
+011 RESPONSE= "delete success on MEMBERS file"
+012 RETURN
+013 END
+014 *
+015 RETURN

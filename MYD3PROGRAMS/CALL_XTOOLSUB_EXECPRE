@@ -1,0 +1,27 @@
+*******************************************************************************
+*
+*       Program CALL_XTOOLSUB_EXECPRE
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Apr 9, 2021 11:33:06 AM
+*  Description:
+*
+*
+*****************************************************************************
+*program XTOOLSUB_EXECPRE(X_CODE, X_PARAMS,X_OUTDATA, X_ERROR)
+X_CODE = 99001
+X_OUTDATA = ""
+X_PARAMS=0
+X_ERROR = ""
+
+PRINT "Calling Initialize x_code=":X_CODE
+CALL XTOOLSUB_EXECPRE(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+X_CODE = 99002
+PRINT "Calling Initialize x_code=":X_CODE
+CALL XTOOLSUB_EXECPRE(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+

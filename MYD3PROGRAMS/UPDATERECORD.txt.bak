@@ -1,0 +1,41 @@
+------------------------------------------------------------
+SUBROUTINE to update a D3 data file record
+-----------------------------------------------------------
+:ct xdemo,bp, RWFILE
+
+    RWFILE
+001 SUBROUTINE UPDATERESOURCE(ID, FirstName, Result)
+002 * Res ID - Input
+003 * FirstName - Input
+004 * Result - Output. Success or failure condition.
+005 *
+006 OPEN 'MEMBERS' TO MEMBERS.FILE ELSE STOP 201, 'members'
+007 inputID=ID
+008 READU item FROM MEMBERS.FILE,ID ELSE STOP 202, ID
+009 item<1>=FirstName
+010 WRITEU item ON MEMBERS.FILE,ID
+011
+012 Result = item
+013 print "Result=":Result
+014 CLOSE MEMBERS.FILE
+015 RETURN
+
+-------------------------------------
+Calling Program 
+------------------------------------
+:CT XDEMO,BP, TESTRW
+    TESTRW
+001 RESULT=""
+002 FIRSTNAME="Ravi"
+003 ID=1060
+004
+005 PRINT "CALLING THE RWFILE FOR UPDATE RECORD ": ID
+006 CALL RWFILE(ID, FIRSTNAME, RESULT)
+007 PRINT "RESULT=":RESULT
+
+
+
+---------------------------
+Testing Result
+--------------------------
+:RUN BP TESTRW

@@ -1,0 +1,59 @@
+*******************************************************************************
+*
+*       Program CALL_FILEIOTEST
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Aug 18, 2021 8:43:44 PM
+*  Description:
+*
+*
+*****************************************************************************
+X_PARAMS=''
+X_OUTDATA=''
+X_ERROR=''
+
+*X_CODE=2
+CALL FILEIOTEST(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+*PRINT '----------------------------------------------'
+*PRINT 'RESULT'
+*PRINT '----------------------------------------------' 
+*PRINT "X_ERROR=":X_ERROR
+*PRINT "X_OUTDATA=":X_OUTDATA
+
+*X_CODE=3
+*CALL FILEIOTEST(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+*PRINT '----------------------------------------------'
+*PRINT 'RESULT'
+*PRINT '----------------------------------------------' 
+*PRINT "X_ERROR=":X_ERROR
+*PRINT "X_OUTDATA=":X_OUTDATA
+
+*X_CODE=4
+*CALL FILEIOTEST(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+PRINT '----------------------------------------------'
+PRINT 'RESULT'
+PRINT '----------------------------------------------' 
+PRINT "X_ERROR=":X_ERROR
+PRINT "X_OUTDATA=":X_OUTDATA
+
+*X_CODE=5
+*CALL FILEIOTEST(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+*PRINT '----------------------------------------------'
+*PRINT 'RESULT'
+*PRINT '----------------------------------------------' 
+*PRINT "X_ERROR=":X_ERROR
+*PRINT "X_OUTDATA=":X_OUTDATA
+
+*X_CODE=6
+*CALL FILEIOTEST(X_CODE, X_PARAMS, X_OUTDATA, X_ERROR)
+*PRINT '----------------------------------------------'
+*PRINT 'RESULT'
+*PRINT '----------------------------------------------' 
+*PRINT "X_ERROR=":X_ERROR
+*PRINT "X_OUTDATA=":X_OUTDATA
+

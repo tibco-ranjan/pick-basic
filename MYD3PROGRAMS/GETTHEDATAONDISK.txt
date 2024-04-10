@@ -1,0 +1,385 @@
+*---------------------------------------------------
+*Data As a part of Read operation.
+*---------------------------------------------------
+LIST ORDERS CLIENT_NO  12:39:50 Aug 21 2021 2
+           Client
+ORDERS.... Number....
+
+       971      10023
+       808      10011
+       919       9986
+       895       9972
+       866      10001
+       833       9974
+       977      10009
+       915      10015
+       891      10004
+       911      10004
+       940      10019
+       804       9967
+       944       9974
+       862       9965
+       973       9993
+       948      10020
+       810       9975
+       921      10006
+       950      10005
+
+:LIST ORDERS ID CLIENT_NO BY ID
+LIST ORDERS ID CLIENT_NO BY.DSND ID 12:42:59 Aug 21 2021 1
+           Order      Client
+ORDERS.... Number.... Number....
+
+       785        785      10022
+       786        786       9973
+       787        787       9981
+       788        788       9971
+       789        789      10007
+       790        790       9997
+       791        791       9997
+       792        792      10008
+       793        793       9995
+       794        794       9993
+       795        795      10014
+       796        796       9982
+       797        797       9991
+       798        798      10001
+       799        799      10019
+       800        800      10010
+       801        801      10018
+       802        802       9998
+       803        803       9986
+
+*:LIST ORDERS ID CLIENT_NO BY.DSND ID
+*
+*:LISTDICT ORDERS
+*SORT DICT ORDERS TYP LOC CONV MNAME FORMAT SM ASSOC BY TYP BY LOC BY @ID 12:45:09 Aug 21 2021 1
+*@ID............ TYP LOC.......... CONV MNAME.......... FORMAT SM ASSOC.....
+*
+*@ID             D               0      ORDERS          10R    S
+*ID              D               0      Order Number    10R    S
+*ORD_DATE        D               1 D4/  Order Date      10R    S
+*ORD_TIME        D               2 MTH  Order Time      7R     S
+*CLIENT_NO       D               3      Client Number   10R    S
+*PRODUCT_NO      D               4      Product Number  10R    MV LINE_ITEMS
+*COLOR           D               5      Color           10T    MS LINE_ITEMS
+*QTY             D               6      Qty             6R     MS LINE_ITEMS
+*PRICE           D               7 MD2, Price           10R    MS LINE_ITEMS
+*
+*:LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=982
+*LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=982 12:45:52 Aug 21 2021 1
+*ORDERS                 982
+*Order Number           982
+*Order Date      10/24/2002
+*Order Time      01:45PM
+*Client Number        10020
+*Product Number Color      Qty    Price
+*         54000 N/A             5    $199.95
+*         57050 Black           5    $179.99
+*         56030 White           5     $19.99
+*         10008 Black           2    $400.00
+*
+*1 record listed
+*
+*:AE ORDERS 982
+*Top of "982" in "ORDERS", 7 lines, 94 characters.
+**--: P10
+*001: 12716
+*002: 49500
+*003: 10020
+*004: 54000Ă˝Ă˝Ă˝
+*005: N/AĂ˝Ă˝Ă˝
+*006: 5Ă˝
+*007: 19995Ă˝Ă˝40000
+*Bottom.
+**--:
+*
+:LIST.ITEM ORDERS "962"
+      962
+001 12716
+002 26400
+003 10022
+004 56000 56010
+005 Gray Gray
+006 5 1
+007 7999 6599
+
+:LIST.ITEM ORDERS "982"
+      982
+001 12716
+002 49500
+003 10020
+004 54000 57050 56030 10008
+005 N/A Black White Black
+006 5 5 5 2
+007 19995 17999 1999 40000
+
+
+ 1 record(s) listed.
+:AE ORDERS 982
+Top of "982" in "ORDERS", 7 lines, 94 characters.
+*--: P10
+001: 12716
+002: 49500
+003: 10020
+004: 54000ý57050ý56030ý10008
+005: N/AýBlackýWhiteýBlack
+006: 5ý5ý5ý2
+007: 19995ý17999ý1999ý40000
+Bottom.
+*--:
+
+ 1 record(s) listed.
+:
+*:RUN BP CALL_FILEIOTEST
+*In /usr/ud82/sys/CTLG/f/FILEIOTEST at line 18, INCLUDE/LOGGING.H at line 20 WARNING: UNINITIALIZED VARIABLE USED! Zero Assumed!
+*CALLING READ_WRITE_TEST
+*Enter the ORDERS record ID::
+*?982
+*Record ID=982
+*Read ORDERS record 982 Value 12716Ăž49500Ăž10020Ăž54000Ă˝Ă˝Ă˝ĂžN/AĂ˝Ă˝Ă˝Ăž5Ă˝Ăž19995Ă˝Ă˝40000
+*----------------------------------------------
+* Data after write operations.
+*---------------------------------------------
+*:LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=983
+*LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=983 13:53:35 Aug 21 2021 1
+*ORDERS                 983
+*Order Number           983
+*Order Date      10/25/2002
+*Order Time      01:45PM
+*Client Number        10020
+*Product Number Color      Qty    Price
+*         54001 Blue           12    $299.95
+*         57051 Purple         24    $399.95
+*         56031 Green          36    $499.95
+*         10009 Indigo         48    $599.95
+*
+*1 record listed
+*
+*:LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=984
+*LIST ORDERS ID ORD_DATE ORD_TIME CLIENT_NO PRODUCT_NO COLOR QTY PRICE WITH ID=984 13:53:47 Aug 21 2021 1
+*ORDERS                 984
+*Order Number           984
+*Order Date      10/26/2002
+*Order Time      01:45PM
+*Client Number        10020
+*Product Number Color      Qty    Price
+*         54000 Blue            5    $199.95
+*         57050 Black           5    $179.99
+*         56030 White           5     $19.99
+*         10008 Black           2    $400.00
+*
+*1 record listed
+
+
+X_ERROR=
+X_OUTDATA=
+:.X1
+RUN BP CALL_FILEIOTEST
+CALLING READ_DATA_FILE_ALL_R_TEST
+COUNT=1  F_ID=785
+COUNT=1 Record::14897ţ28800ţ10022ţ10001ý10008ý10006ý10007ţGrayýBlackýN/AýN/Aţ1ý1ý5ý2ţ199500ý40000ý15995ý12995
+COUNT=2  F_ID=786
+COUNT=2 Record::13799ţ68400ţ9973ţ40014ý40011ý15001ý14001ý11110ţAlmondýBlackýN/AýBlackýGrayţ5ý1ý5ý10ý1ţ2966ý22993ý11900ý4995ý1297
+COUNT=3  F_ID=787
+COUNT=3 Record::11974ţ45000ţ9981ţ11010ý11100ý11150ţBlackýSilverýBlackţ2ý2ý24ţ89994ý13986ý9997
+COUNT=4  F_ID=788
+COUNT=4 Record::14895ţ28800ţ9971ţ10120ý10130ý10110ý39400ţStandardýGrayýN/AýBlackţ1ý1ý1ý1ţ42994ý2997ý14997ý8987
+COUNT=5  F_ID=789
+
+
+RESULT
+----------------------------------------------
+X_ERROR=
+X_OUTDATA=
+:.X1
+RUN BP CALL_FILEIOTEST
+CALLING READ_DATA_FILE_ALL_R_TEST
+COUNT=1  F_ID=984
+COUNT=1 Record::12718ţ49502ţ10020ţ54000ý57050ý56030ý10008ţBlueýBlackýWhiteýBlackţ5ý5ý5ý2ţ19995ý17999ý1999ý40000
+COUNT=2  F_ID=983
+COUNT=2 Record::12717ţ49501ţ10020ţ54001ý57051ý56031ý10009ţBlueýPurpleýGreenýIndigoţ12ý24ý36ý48ţ29995ý39995ý49995ý59995
+COUNT=3  F_ID=982
+COUNT=3 Record::12716ţ49500ţ10020ţ54000ý57050ý56030ý10008ţN/AýBlackýWhiteýBlackţ5ý5ý5ý2ţ19995ý17999ý1999ý40000
+COUNT=4  F_ID=981
+COUNT=4 Record::12716ţ57600ţ9985ţ15004ý54000ţN/AýN/Aţ6ý20ţ21999ý19995
+COUNT=5  F_ID=980
+
+
+971 808 919 895 866 833 977 915 891 911 940
+
+-------------------------------
+:SELECT ORDERS WITH ORD_DATE GT "01/01/96"
+
+190 records selected to list 0.
+
+>SAVE.LIST ORDER_GT_DATE
+190 key(s) saved to 1 record(s).
+:SELECT ORDERS WITH ID GT 900
+
+82 records selected to list 0.
+
+>SAVE.LIST ORDER_ID_GT_900
+82 key(s) saved to 1 record(s).
+:SELECT ORDERS WITH COLOR LIKE '%Black%'
+
+No data retrieved from current (S)SELECT statement.
+:SELECT ORDERS WITH COLOR LIKE 'Black...'
+
+100 records selected to list 0.
+
+>SAVE.LIST ORDER_COL_B
+100 key(s) saved to 1 record(s).
+:
+:
+:
+:EDIT.LIST ORDER_COL_B
+ORDER_COL_B000
+:LIST SAVEDLISTS
+LIST SAVEDLISTS 16:17:22 Aug 22 2021 1
+SAVEDLISTS
+
+ALL.ORDERS
+000
+ORDER_GT_D
+ATE000
+ORDER_ID_G
+T_900000
+ORDER_COL_
+B000
+4 records listed
+-----------------------------------------------------
+SELECT FINDINGS
+-----------------------------------------------------
+:LIST SAVEDLISTS
+
+SELECT
+SSELECT
+QSELECT
+
+SAVE.LIST
+SAVE.LIST [list.name] [FROM list.num]
+EDIT.LIST
+GET.LIST
+COPY.LIST
+DELETE.LIST
+EDIT.LIST
+
+FORM.LIST
+LIST.LABEL
+SORT.LIST
+MERGE.LIST
+CLEARSELECT
+------------------------
+root@localhost:/usr/ud82/demo/SAVEDLISTS# ls -lrt
+total 28
+-rw-r--r--. 1 root root 760 Aug 22 16:11 ORDER_GT_DATE000
+-rw-r--r--. 1 root root 328 Aug 22 16:11 ORDER_ID_GT_900000
+-rw-r--r--. 1 root root 400 Aug 22 16:12 ORDER_COL_B000
+-rw-r--r--. 1 root root 760 Aug 23 12:32 OD_D000
+-rw-r--r--. 1 root root 180 Aug 23 12:40 OD.GT.56.LT.60000
+-rw-r--r--. 1 root root 400 Aug 23 12:43 OR.COL.BLACK000
+-rw-r--r--. 1 root root 296 Aug 23 12:45 OD.COL.GRAY000
+----------------------
+:SSELECT ORDERS WITH PRODUCT_NO GT '56000' AND PRODUCT_NO LT '60000' TO 1
+
+45 records selected to list 1.
+
+:SAVE.LIST ID.56.G.LT.60 FROM 1
+45 key(s) saved to 1 record(s).
+:CLEARSELECT 1
+:GET.LIST ID.56.G.LT.60
+45 records retrieved to list 0.
+>LIST ORDERS  ORD_DATE ORD_TIME CLIENT_NO NAME COMPANY
+LIST ORDERS NAME COMPANY PRODUCT_NO PROD_NAME 13:29:27 Aug 23 2021 1
+ORDERS.... Name..................... Company........ Product Number Product Name
+       820 Michelle Wickerman        Banc Royale              57040 Modem
+       821 Beverly Ostrovich         Riley                    58000 Monitor
+                                     Architects
+                                                              58010 Monitor
+                                                              58020 Monitor
+                                                              58030 Monitor
+                                                              12004 Printer
+                                                              12005 Printer
+                                                              13003 CD-ROM Drive                                                              15002 Modem
+       832 Andrea Herriot            Herriot Hotel            10020 Camcorder
+                                                              10030 Camcorder
+                                                                    Bag
+                                                              11070 TV
+                                                              57000 Scanner
+       834 Casey Avalos              Ulster Medical           40007 Telephone
+                                                              40013 Telephone
+                                                              50010 Computer
+                                                              52010 Printer
+                                                              53030 Photocopier
+45 records listed
+:EDIT.LIST ID.56.G.LT.60
+ID.56.G.LT.60000
+
+:DELETE.LIST ID.56.G.LT.60
+'ID.56.G.LT.60' deleted.
+:GET.LIST ID.56.G.LT.60
+No record retrieved.
+0 records retrieved to list 0.
+:
+
+------------------
+:SSELECT ORDERS WITH PRODUCT_NO GT '56000' AND PRODUCT_NO LT '60000'
+
+45 records selected to list 0.
+
+>SAVE.LIST FROM.O.REC
+45 key(s) saved to 1 record(s).
+:EDIT.LIST FROM.O.REC
+FROM.O.REC000
+:LIST SAVEDLISTS
+LIST SAVEDLISTS 13:34:34 Aug 23 2021 1
+SAVEDLISTS
+
+ORDER_GT_D
+ATE000
+ORDER_ID_G
+T_900000
+ORDER_COL_
+B000
+OD_D000
+OD.GT.56.L
+T.60000
+OR.COL.BLA
+CK000
+OD.COL.GRA
+Y000
+FROM.O.REC
+000
+8 records listed
+
+
+
+
+:GET.LIST FROM.O.REC
+45 records retrieved to list 0.
+>LIST ORDERS NAME COMPANY PRODUCT_NO PROD_NAME
+LIST ORDERS NAME COMPANY PRODUCT_NO PROD_NAME 13:35:04 Aug 23 2021 1
+ORDERS.... Name..................... Company........ Product Number Product Name
+       820 Michelle Wickerman        Banc Royale              57040 Modem
+       821 Beverly Ostrovich         Riley                    58000 Monitor
+                                     Architects
+                                                              58010 Monitor
+                                                              58020 Monitor
+                                                              58030 Monitor
+                                                              12004 Printer
+                                                              12005 Printer
+                                                              13003 CD-ROM Drive                                                              15002 Modem
+       832 Andrea Herriot            Herriot Hotel            10020 Camcorder
+                                                              10030 Camcorder
+                                                                    Bag
+                                                              11070 TV
+                                                              57000 Scanner
+       834 Casey Avalos              Ulster Medical           40007 Telephone
+                                                              40013 Telephone
+                                                              50010 Computer
+                                                              52010 Printer
+                                                              53030 Photocopier
+Enter <New line> to continue...Q
+:
+-------------------------------------

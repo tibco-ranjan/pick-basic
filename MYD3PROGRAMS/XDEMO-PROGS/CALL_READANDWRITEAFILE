@@ -1,0 +1,42 @@
+*******************************************************************************
+*
+*       Program CALL_READANDWRITEAFILE
+*       
+*       Copyright (C) 2022
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Jun 15, 2022 11:58:07 AM
+*  Description:
+*
+*
+*****************************************************************************
+IN_ACCOUNT_NAME='XDEMO'
+IN_ENDP_ID='PERSON'
+IN_ENDP_DATA=''
+OUT_ENDP_REC=''
+
+IN_ENDP_DATA<1>='This is to test first line'
+IN_ENDP_DATA<2>='This is to test second line'
+IN_ENDP_DATA<3>='This is to test third line'
+IN_ENDP_DATA<4>='This is to test fourth line'
+IN_ENDP_DATA<5>='This is to test fith line'
+IN_ENDP_DATA<6>='This is to test sixth line'
+
+
+*CALL READANDWRITEAFILE(1, IN_ACCOUNT_NAME, IN_ENDP_ID, IN_ENDP_DATA, OUT_ENDP_REC)
+*CALL READANDWRITEAFILE(2, IN_ACCOUNT_NAME, IN_ENDP_ID, IN_ENDP_DATA, OUT_ENDP_REC)
+CALL *READANDWRITEAFILE(3, IN_ACCOUNT_NAME, IN_ENDP_ID, IN_ENDP_DATA, OUT_ENDP_REC)
+
+PRINT "DONE with the calling of READANDWRITEAFILE"
+PRINT "OUTPUT OF THE PROGRAM"
+
+ NO_OF_LINES=DCOUNT(OUT_ENDP_REC, @FM)
+ PRINT "NO OF RECORDS=":NO_OF_LINES
+ FOR ENTRY = 1 TO NO_OF_LINES
+                RECVALUE = OUT_ENDP_REC<ENTRY>
+                PRINT RECVALUE
+ NEXT ENTRY
+

@@ -1,0 +1,31 @@
+*******************************************************************************
+*
+*       Program TESTFILEINFO
+*       
+*       Copyright (C) 2021
+*
+*
+*******************************************************************************
+*
+*  Author: rprasad
+*  Created on: Aug 4, 2021 12:18:16 PM
+*  Description:
+*
+*
+*****************************************************************************
+OPEN 'PRODUCTS' TO PRODUCTS ELSE STOP 'CANT OPEN FILE'
+PRINT "PRODUCT FILE TYPE=":FILEINFO(PRODUCTS,3)
+PRINT "PRODUCT CHECK RECORD=":FILEINFO(PRODUCTS,25)
+
+
+OPEN 'TESTDYNAMIC' TO TESTDYNAMIC ELSE STOP 'CANT OPEN FILE'
+PRINT "TESTDYNAMIC FILE TYPE=":FILEINFO(TESTDYNAMIC,3)
+PRINT "TESTDYNAMIC CHECK RECORD=":FILEINFO(TESTDYNAMIC,25)
+
+OPEN 'MEMBERS' TO TESTMEMBERS THEN
+   PRINT "Successfully Open the MEMBERS file"
+ELSE 
+   PRINT "Failed to open the file with STATUS =":STATUS()
+END
+
+CLOSE TESTMEMBERS
